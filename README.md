@@ -1,0 +1,2 @@
+# snsproject
+django sns project
