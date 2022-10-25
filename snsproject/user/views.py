@@ -34,7 +34,10 @@ def sign_up_view(request):
 
 
 def sign_in_view(request):
-    if request.method == 'POST':
+    if request.method == 'GET':
+        return render(request, 'user/signin.html')
+
+    elif request.method == 'POST':
         username = request.POST.get('username', None)
         password = request.POST.get('password', None)
 
@@ -46,6 +49,3 @@ def sign_in_view(request):
 
         else: # 로그인이 실패하면 다시 로그인 페이지를 보여주기
             return redirect('/sign-in')
-
-    elif request.method == 'GET':
-        return render(request, 'user/signin.html')

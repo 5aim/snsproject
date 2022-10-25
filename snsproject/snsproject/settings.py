@@ -54,6 +54,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'snsproject.urls'
 
+# error : TemplateDoesNotExist
 TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates')
 
 TEMPLATES = [
@@ -128,3 +129,8 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# django AbstractUser model  + UserModel
+# bio를 추가했으므로 user(앱 안에 있는).UserModel을 사용하겠다.
+
+AUTH_USER_MODEL = 'user.UserModel'
