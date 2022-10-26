@@ -6,6 +6,7 @@
 {% block content %}
 <div class="container">
     <div class="wrap">
+        <h2 class="title-center"> 로그인 </h2>
         <!-- method="post" 보내는 url(actions) : /sign-up/ -->
         <form class="form-area" action="/sign-in/" method="post">
             {% csrf_token %} {# Cross Site Request Forgery #}
@@ -13,7 +14,7 @@
                 <label for="username"> ID </label>
                 <input type="text" class="form-control" id="username" name="username">
             </div>
-
+            
             <div class="form-group mt-2 mb-2">
                 <label for="password"> Password </label>
                 <input type="password" class="form-control" id="password" name="password">
