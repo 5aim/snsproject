@@ -59,7 +59,7 @@ def sign_in_view(request):
 
         if me is not None:  # 저장된 사용자의 패스워드와 입력받은 패스워드 비교 / 사용자가 있는지 없는지만 구분해주면 됨.
             auth.login(request, me) # 만약에 사용자가 비어있지 않으면 me 정보를 넣고서 로그인 시켜줌.
-            return redirect("/")
+            return redirect('/')
 
         else:  # 로그인이 실패하면 다시 로그인 페이지를 보여주기
             return render(request, 'user/signin.html', {'error':'아이디와 비밀번호를 확인해주세요'})
