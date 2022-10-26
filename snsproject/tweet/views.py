@@ -1,9 +1,9 @@
 from django.shortcuts import render, redirect
 from .models import TweetModel
 
-# 사용자가 로그인 했는지 확인해서 페이지를 나눠보여주도록 함
 def home(request):
     user = request.user.is_authenticated
+    # 사용자가 로그인 했는지 확인해서 페이지를 나눠보여주도록 함
 
     if user:
         return redirect('/tweet')
@@ -11,13 +11,13 @@ def home(request):
         return redirect('/sign-in')
 
 
-# tweet에 home띄워주기
 def tweet(request):
     if request.method == 'GET':
         user = request.user.is_authenticated
 
         if user:
-            return render(request, 'tweet/home.html')
+            all_tweet = TweetModel.objects.all().order_by('-created_at') # 작성글 모두 최근 작성 순으로 불러오고
+            return render(request, 'tweet/home.html', {'tweet':all_tweet}) # tweet으로 데이터를 모두 담는다.
         else:
             return redirect('/sign-in')
 
