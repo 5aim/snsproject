@@ -13,5 +13,10 @@ def home(request):
 # tweet에 home띄워주기
 def tweet(request):
     if request.method == 'GET':
-        return render(request, 'tweet/home.html')
+        user = request.user.is_authenticated
+
+        if user:
+            return render(request, 'tweet/home.html')
+        else:
+            return redirect('/sign-in')
 

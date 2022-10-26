@@ -2,6 +2,7 @@ from django.shortcuts import HttpResponse, redirect, render
 from .models import UserModel
 from django.contrib.auth import get_user_model  # 회원가입 중복확인
 from django.contrib import auth  # 사용자 auth 기능
+from django.contrib.auth.decorators import login_required
 
 # 회원가입
 def sign_up_view(request):
@@ -63,3 +64,9 @@ def sign_in_view(request):
 
         else:  # 로그인이 실패하면 다시 로그인 페이지를 보여주기
             return render(request, 'user/signin.html', {'error':'아이디와 비밀번호를 확인해주세요'})
+
+
+@login_required # == user = request.user.is_authenticated
+def logout(request):
+    auth.logout(request) # 인증되어 있는 정보를 없애줌.
+    return redirect ('/')
