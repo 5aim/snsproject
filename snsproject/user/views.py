@@ -4,6 +4,7 @@ from django.contrib.auth import get_user_model  # 회원가입 중복확인
 from django.contrib import auth  # 사용자 auth 기능
 from django.contrib.auth.decorators import login_required
 
+
 # 회원가입
 def sign_up_view(request):
     if request.method == 'GET':
@@ -66,7 +67,31 @@ def sign_in_view(request):
             return render(request, 'user/signin.html', {'error':'아이디와 비밀번호를 확인해주세요'})
 
 
+# 로그아웃
 @login_required # == user = request.user.is_authenticated
 def logout(request):
     auth.logout(request) # 인증되어 있는 정보를 없애줌.
     return redirect ('/')
+
+
+# 유저 리스트 보여주기
+@login_required
+def user_view(request):
+    if request.method == 'GET':
+        # 로그인한 사용자를 제외하고 모든 사용자 불러오기
+        user_list = UserModel.objects.all().exclude(username=request.user.username)
+        return render(request, 'user/user_list.html', {'user_list':user_list})
+
+
+# 팔로우
+@login_required
+def user_follow(request, id):
+    me = request.user
+    click_user = UserModel.objects.get(id=id) # 방금 내가 팔로우 누른 상대방
+
+    if me in click_user.follow.all(): # 방금 내가 팔로우 누른 상대방에 내가 포함되어 있다면
+        click_user.follow.remove(request.user) # 나는 빼라
+    else:
+        click_user.follow.add(request.user) # 상대에 내가 포함되어 있지 않으면 add
+
+    return redirect('/user')
