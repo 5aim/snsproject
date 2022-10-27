@@ -48,6 +48,17 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-body">
+
+                            <!-- 작성자와 글쓴이가 같을 경우에만 삭제버튼 -->
+                            {% if tw.author == user %}
+                            <div style="text-align: right">
+                                <!-- 삭제 버튼은 tw.id 게시글 고유의 id값과 연결 -->
+                                <a href="/tweet/delete/{{ tw.id }}">
+                                    <span class="badge rounded-pill bg-danger">글 삭제</span>
+                                </a>
+                            </div>
+                            {% endif %}
+
                             <div class="media">
                                 <div class="media-body">
                                     <h5 class="mt-0">{{ tw.content }}</h5>

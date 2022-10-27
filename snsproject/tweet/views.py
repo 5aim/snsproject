@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect
 from .models import TweetModel
+from django.contrib.auth.decorators import login_required
+
 
 def home(request):
     user = request.user.is_authenticated
@@ -31,3 +33,11 @@ def tweet(request):
 
         my_tweet.save()
         return redirect('/tweet')
+
+
+# auth user가 필요하고 element로 id가 필요함.
+@login_required
+def delete_tweet(request, id):
+    my_tweet = TweetModel.objects.get(id=id)
+    my_tweet.delete()
+    return redirect('/tweet')
