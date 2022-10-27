@@ -48,7 +48,6 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-body">
-
                             <!-- 작성자와 글쓴이가 같을 경우에만 삭제버튼 -->
                             {% if tw.author == user %}
                             <div style="text-align: right">
@@ -58,6 +57,12 @@
                                 </a>
                             </div>
                             {% endif %}
+                            <!-- 게시글 보기 -->
+                            <div style="text-align: right">
+                                <a href="/tweet/{{ tw.id }}">
+                                    <span class="badge rounded-pill bg-success">보기</span>
+                                </a>
+                            </div>
 
                             <div class="media">
                                 <div class="media-body">
