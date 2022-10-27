@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from .models import TweetComment, TweetModel
 from django.contrib.auth.decorators import login_required
+from django.views.generic import ListView, TemplateView # 태그기능
 
 
 # 홈화면
@@ -16,6 +17,7 @@ def home(request):
 
 # 게시글 불러오기와 작성
 def tweet(request):
+    # 게시글 불러오기
     if request.method == 'GET':
         user = request.user.is_authenticated
 
@@ -25,9 +27,11 @@ def tweet(request):
         else:
             return redirect('/sign-in')
 
+    # 게시글 작성
     elif request.method == 'POST':
         user = request.user
         content = request.POST.get('my-content', '')
+        tags = request.POST.get('tag','').split('#')
 
         if content == '':
             all_tweet = TweetModel.objects.all().order_by('-created_at')
@@ -42,6 +46,12 @@ def tweet(request):
         
         # # home.htm에 id = my-content. POST형식으로 요청한 데이터를 id, name으로 가져올 수 있음
         # my_tweet.content = request.POST.get('my-content', '')
+
+            for tag in tags:
+                tag = tag.strip()
+
+                if tag != '': # 태그를 작성하지 않았을 경우 not save
+                    my_tweet.tags.add(tag)
 
         my_tweet.save()
         return redirect('/tweet')
@@ -86,3 +96,22 @@ def delete_comment(requeset, id):
     current_tweet = comment.tweet.id
     comment.delete()
     return redirect('/tweet/'+str(current_tweet))
+
+
+# 태그를 모아두는 태그 클라우드
+class TagCloudTV(TemplateView):
+    template_name = 'greenlight/tag_cloud_view.html'
+
+
+# 태그를 모아서 화면에 전달하는 역할
+class TaggedObjectLV(ListView):
+    template_name = 'taggit/tag_with_post.html'
+    model = TweetModel
+
+    def get_queryset(self):
+        return TweetModel.objects.filter(tags__name=self.kwargs.get('tag'))
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['tagname'] = self.kwargs['tag']
+        return context
