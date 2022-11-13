@@ -19,6 +19,8 @@
 
 6. django-taggit 기능.
 
+7. django secret key 환경변수 설정
+
 </br>
 </br>
 
